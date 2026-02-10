@@ -11,13 +11,11 @@ export default function AdminView() {
     const token = localStorage.getItem("token");
     const headers = { Authorization: `Bearer ${token}` };
 
-    // Fetch Users
-    fetch("http://localhost:5000/api/auth/users", { headers })
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/auth/users`, { headers })
       .then((res) => res.json())
       .then((data) => setUsers(data));
 
-    // Fetch Posts
-    fetch("http://localhost:5000/api/posts/admin", { headers })
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/admin`, { headers })
       .then((res) => res.json())
       .then((data) => setPosts(data));
   }, []);
@@ -25,7 +23,7 @@ export default function AdminView() {
   const handleDeletePost = async (id) => {
     if (!confirm("Delete this post permanently?")) return;
     const token = localStorage.getItem("token");
-    await fetch(`http://localhost:5000/api/posts/${id}`, {
+    await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

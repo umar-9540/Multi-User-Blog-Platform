@@ -15,19 +15,19 @@ export default function Signup() {
     setError("");
 
     try {
-      // 1. Send data to backend
-      const res = await fetch("http://localhost:5000/api/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
-      });
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, email, password }),
+        },
+      );
 
       const data = await res.json();
 
-      // 2. Handle errors
       if (!res.ok) throw new Error(data.message || "Signup failed");
 
-      // 3. Auto-login the user (save token & redirect)
       login(data.token, { name: data.name, role: data.role, _id: data._id });
     } catch (err) {
       setError(err.message);

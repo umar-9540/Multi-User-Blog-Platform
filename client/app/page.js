@@ -6,7 +6,7 @@ export default function Home() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/posts")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/posts`)
       .then((res) => res.json())
       .then((data) => setPosts(data.posts));
   }, []);

@@ -7,10 +7,9 @@ export default function CommentSection({ postId, postAuthorId }) {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(true);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/comments/${postId}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/comments/${postId}`)
       .then((res) => res.json())
       .then((data) => {
         setComments(data);
@@ -24,14 +23,17 @@ export default function CommentSection({ postId, postAuthorId }) {
     if (!newComment.trim()) return;
 
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/comments/${postId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/comments/${postId}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ content: newComment }),
       },
-      body: JSON.stringify({ content: newComment }),
-    });
+    );
 
     if (res.ok) {
       const savedComment = await res.json();
@@ -47,10 +49,13 @@ export default function CommentSection({ postId, postAuthorId }) {
     if (!confirm("Are you sure you want to delete this comment?")) return;
 
     const token = localStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/api/comments/${commentId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/api/comments/${commentId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      },
+    );
 
     if (res.ok) {
       setComments(comments.filter((c) => c._id !== commentId));
