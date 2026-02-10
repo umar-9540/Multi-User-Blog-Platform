@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Environment Variables (Keep your keys secret!)
+.env
+.env.local
+.DS_Store
+
+# Next.js Build
+.next/
+out/
+build/
+dist/
